@@ -67,11 +67,11 @@ services:
         - GROUP_ID=${DJANGOAPI_GROUP_ID}
         - USERNAME=${DJANGOAPI_USERNAME}
 
-    command: python manage.py runserver 0.0.0.0:8031
+    command: python manage.py runserver 0.0.0.0:8888
     volumes:
       - ./djangoapi:/usr/src/app
     ports:
-      - 127.0.0.1:${DEVELOP_DOCKER_DJANGO_API_FORWARDED_PORT}:8031
+      - 127.0.0.1:${DEVELOP_DOCKER_DJANGO_API_FORWARDED_PORT}:8888
       #puerto para depuración remota, al poner djangoapi.settings.REMOTE_DEBUG = True
       - 127.0.0.1:6789:6789
     env_file:

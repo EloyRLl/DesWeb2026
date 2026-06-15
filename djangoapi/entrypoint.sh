@@ -8,10 +8,10 @@ echo "Esperando a la base de datos: $POSTGRES_DB en host postgis..."
 
 # 1. Espera hasta que la base de datos acepte conexiones
 until python -c "
-import psycopg
+import psycopg2
 import sys
 try:
-    conn = psycopg.connect(
+    conn = psycopg2.connect(
         dbname='$POSTGRES_DB',
         user='$POSTGRES_USER',
         password='$POSTGRES_PASSWORD',
@@ -32,10 +32,10 @@ echo "¡Base de datos lista!"
 # 2. Comprobar si el esquema 'codelist' existe
 echo "Comprobando si la tabla 'auth_user' ya existe..."
 AUTH_USER_TABLE_EXISTS=$(python -c "
-import psycopg
+import psycopg2
 import sys
 try:
-    conn = psycopg.connect(
+    conn = psycopg2.connect(
         dbname='$POSTGRES_DB',
         user='$POSTGRES_USER',
         password='$POSTGRES_PASSWORD',

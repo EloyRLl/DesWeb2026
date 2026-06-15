@@ -1,33 +1,19 @@
-FROM python:3.14-alpine
+# Cambiamos a una base Debian-slim (más compatible con librerías GIS)
+FROM python:3.12-slim
 
 WORKDIR /usr/src/app
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Instalamos dependencias de sistema
-RUN apk update && apk add --no-cache \
-    postgresql-dev \
-    gcc \
-    # Dependencias esenciales para GeoDjango (GDAL, GEOS, PROJ)
-    gdal-dev \
-    geos-dev \
-    proj-dev \
-    proj-util \
-    # Otras dependencias de compilación y utilidades
-    musl-dev \
-    libffi-dev \
-    pango-dev \
-    zlib-dev \
-    jpeg-dev \
-    freetype-dev \
-    # Para que el shell de entrypoint funcione correctamente
-    bash
-
-# Variables de entorno para que Django encuentre las librerías GIS en Alpine
-# Estas rutas son las estándar en Alpine Linux
-ENV GDAL_LIBRARY_PATH=/usr/lib/libgdal.so
-ENV GEOS_LIBRARY_PATH=/usr/lib/libgeos_c.so
+# Instalamos dependencias de sistema compatibles con Debian
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    binutils \
+    libproj-dev \
+    gdal-bin \
+    libgdal-dev \
+    python3-gdal \
+    bash \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
@@ -35,6 +21,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 RUN chmod +x entrypoint.sh
-RUN chmod +x initdb.sh
-
+# Si tu initdb.sh no es estrictamente necesario para el inicio, 
+# asegúrate de que no bloquee el contenedor.
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
