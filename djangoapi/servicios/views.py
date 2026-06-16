@@ -5,14 +5,14 @@ from .serializers import ZonaServicioSerializer, TuberiaSerializer, ArquetaPozoS
 class ZonaServicioViewSet(viewsets.ModelViewSet):
     queryset = ZonaServicio.objects.all()
     serializer_class = ZonaServicioSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated] 
 
 class TuberiaViewSet(viewsets.ModelViewSet):
     queryset = Tuberia.objects.all()
     serializer_class = TuberiaSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated] 
 
 class ArquetaPozoViewSet(viewsets.ModelViewSet):
     queryset = ArquetaPozo.objects.all()
     serializer_class = ArquetaPozoSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated] 
